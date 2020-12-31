@@ -12,6 +12,7 @@ public class ShareTransactionDto {
 	private double transactionAmount;
 	private double commission;
 	private String companyCommodity;
+	private double earning;
 	
 	public Long getShareTransactionId() {
 		return shareTransactionId;
@@ -72,6 +73,12 @@ public class ShareTransactionDto {
 	}
 	public void setCompanyCommodity(String companyCommodity) {
 		this.companyCommodity = companyCommodity;
+	}
+	public double getEarning() {
+		return earning;
+	}
+	public void setEarning(double earning) {
+		this.earning = earning;
 	}
 	
 }

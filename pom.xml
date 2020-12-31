@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.wf.training</groupId>
-	<artifactId>SBA3_FinalReference1</artifactId>
+	<artifactId>PMS-B6-Cohorts-5_Spring</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>Reference	Test1</name>
+	<name>bootapp-restful-crud</name>
 	<description>Demo project for Spring Boot</description>
 
 	<properties>

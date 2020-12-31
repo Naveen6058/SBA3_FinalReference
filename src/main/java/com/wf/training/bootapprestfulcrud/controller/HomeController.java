@@ -5,7 +5,6 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -15,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.wf.training.bootapprestfulcrud.dto.BackOfficeLoginDto;
+import com.wf.training.bootapprestfulcrud.dto.HomePageOutputDto;
 import com.wf.training.bootapprestfulcrud.dto.SuperUserLoginDto;
 import com.wf.training.bootapprestfulcrud.dto.InvestorDto;
 import com.wf.training.bootapprestfulcrud.dto.LoginDto;
@@ -41,7 +41,7 @@ public class HomeController {
 	}
 	
 	@RequestMapping("/logout")
-	public String logout(@ModelAttribute("investorLoginDto") LoginDto investorLoginDto, Model model) {
+	public String logout(@ModelAttribute("investorLoginDto") LoginDto investorLoginDto, Model model,HttpSession session) {
 		model.addAttribute("Message", "Logged out successfully");
 		return "invLogin";
 	}
@@ -50,7 +50,6 @@ public class HomeController {
 	public String userLogin(@ModelAttribute("investorLoginDto") LoginDto investorLoginDto) {
 		return "invLogin";
 	}
-	
 	
 	@RequestMapping("/SuperUserLogin")
 	public String superUserLogin(Model model) {
@@ -68,13 +67,9 @@ public class HomeController {
 	
 	@PostMapping("/validate")
 	public String loginValidate(@Valid @ModelAttribute("superuser") SuperUserLoginDto dto,BindingResult result,Model model) {
-		System.out.println("Logging in");
 		if(result.hasErrors()) {
 			return "SuperUserLogin";
-		} 
-		//else if(superuser.getSuperUserId().equals(1) && superuser.getPassword().equals("abc")) {
-		else if(superService.validateUser(dto)) {
-			System.out.println("superuser");
+		}else if(superService.validateUser(dto)) {
 			return "SuperUserHomePage";
 		}else
 			model.addAttribute("Message", "Invalid Credentials");
@@ -129,6 +124,8 @@ public class HomeController {
 		boolean status = this.investorService.validateInvestor(investorLoginDto);
 		newSession.setAttribute("Investor", investorLoginDto);
 		if (status==true) {
+			HomePageOutputDto homePageOutputDto = this.investorService.fetchPortFolioDetails(investorLoginDto.getLoginKey());
+			model.addAttribute("homePageOutputDto", homePageOutputDto);
 			return "invHomePage";
 		}else {
 			model.addAttribute("Message", "Invalid Credentials");
@@ -136,14 +133,9 @@ public class HomeController {
 		}
 	}
 	
-	@RequestMapping("/access-denied")
-	public String accessDenied() {
+	@RequestMapping("/error-page")
+	public String error() {
 		return "error-page";
-	}
-	
-	@RequestMapping("/custom-login")
-	public String customLogin() {
-		return "custom-login";
 	}
 	
 }

@@ -2,8 +2,6 @@ package com.wf.training.bootapprestfulcrud.service;
 
 import java.util.List;
 
-import javax.validation.Valid;
-
 import com.wf.training.bootapprestfulcrud.dto.AddStockPriceDto;
 import com.wf.training.bootapprestfulcrud.dto.CompanyDto;
 import com.wf.training.bootapprestfulcrud.dto.SearchCompanyDto;
@@ -21,5 +19,6 @@ public interface CompanyService {
 	public CompanyDto modifyCompany(CompanyDto companyOutputDto);
 	public boolean addStockPrice(AddStockPriceDto addStockDto);
 	public List<String> fetchAllCompanyNames();
+	public List<CompanyDto> fetchAllCompanyBySector(String sector);
 	
 }

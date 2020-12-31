@@ -1,7 +1,6 @@
 package com.wf.training.bootapprestfulcrud.dto;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 public class SuperUserLoginDto {
 

@@ -5,7 +5,6 @@ public class WalletDto {
 	private int investorID;
 	private Long walletId;
 	private String fullName;
-	private double amount;
 	private double balance;
 	
 	public int getInvestorID() {
@@ -26,12 +25,6 @@ public class WalletDto {
 	}
 	public void setFullName(String fullName) {
 		this.fullName = fullName;
-	}
-	public double getAmount() {
-		return amount;
-	}
-	public void setAmount(double amount) {
-		this.amount = amount;
 	}
 	public double getBalance() {
 		return balance;

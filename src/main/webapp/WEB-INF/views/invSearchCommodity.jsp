@@ -1,7 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@taglib uri="http://www.springframework.org/security/tags" prefix="security" %>
-<%@taglib uri="http://www.springframework.org/tags/form" prefix="spring" %>   
+<%@taglib uri="http://www.springframework.org/tags/form" prefix="spring" %> 
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -68,7 +69,7 @@ body {
 	transition: margin-left .5s;
 }
 .search{
-	padding-top:5%;
+	margin:2%;
 	display: flex;
     justify-content: center;
     text-align: center;
@@ -97,6 +98,18 @@ span{
 #errors{
 	color:red;
 }
+table, th, td {
+	  margin-left: 10px;
+	  height: 50px;
+	  border: 1px solid black;
+	}
+	thead {
+	  background: DodgerBlue;
+	  color: #fff;
+	}
+	table{
+		width:80%;
+	}
 
 </style>
 <body>
@@ -105,8 +118,8 @@ span{
 		<a href="${pageContext.request.contextPath}/user/home">Dashboard</a> 
 		<a href="${pageContext.request.contextPath}/user/searchCompany">Search Company</a>
 		<a href="${pageContext.request.contextPath}/user/searchCommodity">Search Commodity</a> 
-		<a href="#">Sector</a>
-		<a href="#">Portfolio Report</a> 
+		<a href="${pageContext.request.contextPath}/user/searchSector">Sector</a>
+		<a href="${pageContext.request.contextPath}/user/portfolioReport">Portfolio Report</a> 
 		<a href="${pageContext.request.contextPath}/user/wallet">Wallet</a>
 	</div>
 	<div id="main">
@@ -124,16 +137,38 @@ span{
 		<div class="search">
 			<spring:form action="${pageContext.request.contextPath}/user/commodity" method="post" modelAttribute="commodity">
 				<spring:input type="search" path="commodityName" placeholder="Search Commodity Name"></spring:input>
+				<button type=Submit name=Submit>Submit</button>
 				<br>
 				<spring:errors path="commodityName" cssClass="error" id="errors"/>
-				<hr/>
-				<button type=Submit name=Submit>Submit</button>
 			</spring:form>
 		</div>
 	</div>
+	<hr/>
+	<div class="search">
+		<table>
+			<thead>
+				<tr>
+					<td>Commodity ID</td>
+					<td>Commodity Name</td>
+					<td>Unit Price</td>
+				</tr>
+			</thead>
+			<tbody>
+				<core:forEach var="commodity" begin="0" end="10" items="${commodityDto}">
+					<tr>
+						<td>${commodity.commodityId}</td>
+						<td>
+						<a href ="${pageContext.request.contextPath}/user/commodity/${commodity.commodityName}">${commodity.commodityName}</a>
+						</td>
+						<td>${commodity.price}</td>
+					</tr>
+				</core:forEach>
+			</tbody>
+		</table>
+	</div>
 	<script>
 		function openNav() {
-			document.getElementById("mySidebar").style.width = "250px";
+			document.getElementById("mySidebar").style.width = "270px";
 			document.getElementById("main").style.marginLeft = "250px";
 		}
 

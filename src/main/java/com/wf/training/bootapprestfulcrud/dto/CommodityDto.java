@@ -1,7 +1,5 @@
 package com.wf.training.bootapprestfulcrud.dto;
 
-import java.time.LocalDateTime;
-
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 

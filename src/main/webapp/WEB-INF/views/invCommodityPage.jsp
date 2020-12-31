@@ -42,18 +42,14 @@
 		position:absolute;
 	}
 	#currentPrice{
-		margin-left:300px;
+		margin-left:280px;
 		position: relative;
-		top:10px;
-		border: 4px solid red;
+		top:15px;
 		width:250px;
 		text-align: center;
-		height: 90px;
-		background: DodgerBlue;
+		height: 100px;
+		background-color: DodgerBlue;
 		color: white;
-	}
-	#content{
-		text-align: center;	
 	}
 	span{
 		margin: auto;

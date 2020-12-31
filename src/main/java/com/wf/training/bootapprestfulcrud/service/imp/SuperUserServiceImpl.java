@@ -20,7 +20,6 @@ public class SuperUserServiceImpl implements SuperUserService {
 	@Autowired
 	private BackOfficeUserRepository borepo;
 	
-	
 	public SuperUser get(Integer id) {
 		return repo.findById(id).get();
 	}

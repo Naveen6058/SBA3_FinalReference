@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
     <%@taglib uri= "http://www.springframework.org/tags/form" prefix="spring"%>
+    <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -84,7 +85,6 @@
 					<th scope="col" colspan="1">Wallet ID</th>
 					<th scope="col" colspan="1">Investor ID</th>
 					<th scope="col" colspan="1">Investor Name</th>
-					<th scope="col" colspan="1">Amount invested</th>
 					<th scope="col" colspan="1">Wallet Balance</th>
 				</tr>
 			</thead>
@@ -93,8 +93,7 @@
 					<td>${walletDto.walletId}</td>
 					<td>${walletDto.investorID}</td>
 					<td>${walletDto.fullName}</td>
-					<td>${walletDto.amount}</td>
-					<td>${walletDto.balance}</td>
+					<td><fmt:formatNumber type="number" maxFractionDigits="2" value="${walletDto.balance}"/></td>
 				</tr>
 			</tbody>
 		</table>

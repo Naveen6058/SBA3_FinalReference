@@ -19,7 +19,7 @@ body {
 
 .sidebar {
 	height: 100%;
-	width: 25%;
+	width: 0%;
 	position: fixed;
 	z-index: 1;
 	top: 0;
@@ -106,6 +106,7 @@ span{
 	margin-left:50px;
 	color:white;
 	position:relative;
+	font-weight: bold;
 }
 
 /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
@@ -130,9 +131,9 @@ span{
 		
 		<label class="generateCommision">Generate Commission</label>
 		<ul>
-			<li><a href="#">Annual Report</a></li>
-			<li><a href="#">Monthly Report</a></li>
-			<li><a href="#">Periodic Report</a></li>
+			<li><a href="${pageContext.request.contextPath}/bouser/generateAnnualReport">Annual Report</a></li>
+			<li><a href="${pageContext.request.contextPath}/bouser/generateMonthlyReport">Monthly Report</a></li>
+			<li><a href="${pageContext.request.contextPath}/bouser/generatePeriodicReport">Periodic Report</a></li>
 		</ul>
 	</div>
 	<div id="main">
@@ -144,12 +145,11 @@ span{
 			</button>
 			<a href="${pageContext.request.contextPath}/bouser/home" id="primaryNavigators">Home</a>
 			<span class="text-light font-weight-bold">BackOfficeUser Dashboard</span>
-			<div><spring:form action="${pageContext.request.contextPath}/logout" id="primaryNavigators" method="POST">
-				<input type="submit" value="Logout" />
-				</spring:form></div>
+			<div><a href="${pageContext.request.contextPath}/bouser/logout" class="text-light font-weight-bold" id="primaryNavigators">Logout</a></div>
 		</nav>
 		<div class="container">
 			<h4>Welcome to the BO User HomePage:</h4>
+			<hr>
 		</div>
 	</div>
 	<script>

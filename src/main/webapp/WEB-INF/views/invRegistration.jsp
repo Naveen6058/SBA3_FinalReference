@@ -17,18 +17,18 @@
 	#center{
 		margin: auto;
 		width: 25%;
-		margin-top: 5%;
+		margin-top: 2%;
 		border: 3px solid green;
 		padding: 10px;
 	}
 	
-	#primaryNavigators{
-		margin-left:50px;
-		color:white;
-		position:relative;
-	}
 	#errors{
 		color:red;
+		text-align: center;
+		padding-top: 50px;
+	}
+	#textCentre{
+		text-align: center;
 	}
 
 </style>
@@ -36,12 +36,13 @@
 <body>
 	<div>
 		<nav class="navbar navbar-dark bg-primary">
-			<div><a href="${pageContext.request.contextPath}/index" id="primaryNavigators">Index</a></div>
+			<div><a href="${pageContext.request.contextPath}/index" class="text-light font-weight-bold">Index</a></div>
 			<span class="text-light font-weight-bold" >User Registration</span>
 		</nav>
 	</div>
+	<h4 id="errors">${Message}</h4>
 	<div id=center>
-		<h4 id="errors">${Message}</h4>
+		<div id="textCentre"><h4>User Registration Form</h4></div>
 		<hr>
 		<spring:form action="${pageContext.request.contextPath}/createInvestor" method="POST" modelAttribute="newInvestor">
 			<table>

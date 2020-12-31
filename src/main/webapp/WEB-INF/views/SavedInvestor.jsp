@@ -15,41 +15,23 @@
 	span{
 		margin: auto;
 	}
-	#center{
+	
+	#output{
 		margin: auto;
 		width: 22%;
 		margin-top: 5%;
 		border: 3px solid green;
 		padding: 10px;
-	}
-	.error{
-		color:red;
-	}
-	
-	
-#primaryNavigators{
-	margin-left:50px;
-	color:white;
-	position:relative;
-}
-#output{
-	margin: auto;
-	width: 22%;
-	margin-top: 5%;
-	border: 3px solid green;
-	padding: 10px;
-	text-align: center;
-}	
+		text-align: center;
+	}	
 
 </style>
 </head>
 <body>
 	<div>
 		<nav class="navbar navbar-dark bg-primary">
-			<div><a href="${pageContext.request.contextPath}" id="primaryNavigators">Index</a></div>
-			<span>
-				<span class="text-light font-weight-bold" >Investor Created Successfully</span>
-			</span>
+			<div><a href="${pageContext.request.contextPath}" class="text-light font-weight-bold">Index</a></div>
+			<span class="text-light font-weight-bold" >Investor Created Successfully</span>
 		</nav>
 	</div>
 	<hr/>

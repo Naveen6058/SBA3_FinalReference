@@ -24,7 +24,7 @@
 	#footer {
 		width:80%;
 		position: absolute;
-		right:15%;
+		right:9%;
 	}
 	#primaryNavigators{
 		margin-left:50px;
@@ -58,7 +58,7 @@
 				<tr>
 					<th scope="col" colspan="1">Commodity ID</th>
 					<th scope="col" colspan="1">Commodity Name</th>
-					<th scope="col" colspan="1">Commodity Price</th>
+					<th scope="col" colspan="1">Unit Price</th>
 					<th scope="col" colspan="2">Date</th>
 				</tr>
 			</thead>

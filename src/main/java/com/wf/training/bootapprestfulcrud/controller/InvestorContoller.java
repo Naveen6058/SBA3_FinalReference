@@ -1,6 +1,5 @@
 package com.wf.training.bootapprestfulcrud.controller;
 
-
 //import java.security.Principal;
 import java.util.List;
 
@@ -17,13 +16,18 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.wf.training.bootapprestfulcrud.dto.CompanyHistoricalDataOutputDto;
+import com.wf.training.bootapprestfulcrud.dto.HomePageOutputDto;
 import com.wf.training.bootapprestfulcrud.dto.LoginDto;
 import com.wf.training.bootapprestfulcrud.dto.MoneyInputDto;
+import com.wf.training.bootapprestfulcrud.dto.PortfolioDto;
+import com.wf.training.bootapprestfulcrud.dto.PortfolioReportDto;
+import com.wf.training.bootapprestfulcrud.dto.ReportTypeInputDto;
 import com.wf.training.bootapprestfulcrud.dto.SearchCommodityDto;
 import com.wf.training.bootapprestfulcrud.dto.CommodityDto;
 import com.wf.training.bootapprestfulcrud.dto.CommodityHistoricalDto;
 import com.wf.training.bootapprestfulcrud.dto.CompanyDto;
 import com.wf.training.bootapprestfulcrud.dto.SearchCompanyDto;
+import com.wf.training.bootapprestfulcrud.dto.SearchSectorInputDto;
 import com.wf.training.bootapprestfulcrud.dto.ShareCountInputDto;
 import com.wf.training.bootapprestfulcrud.dto.ShareTransactionDto;
 import com.wf.training.bootapprestfulcrud.dto.WalletDto;
@@ -48,24 +52,21 @@ public class InvestorContoller {
 
 	//dashboard for user
 	@RequestMapping(value= {"/home","/dashboard","/index"})
-//	public String home(Principal principal) {
 	public String home(@SessionAttribute("Investor") LoginDto investorLoginDto, Model model) {
+		
+		HomePageOutputDto homePageOutputDto = this.investorService.fetchPortFolioDetails(investorLoginDto.getLoginKey());
+		
 		model.addAttribute("Investor", investorLoginDto);
+		model.addAttribute("homePageOutputDto", homePageOutputDto);
 		return "invHomePage";
 	}
 	
 	@RequestMapping()
 	public String defaultResponse() {
-		// return "user-base";
 		return "redirect:/user/home";
 	}
 	
-	@RequestMapping("/profile-entry")
-	public String profileEntry(Model model) {
-		return "employee-profile-entry";
-	}
-	
-	
+	//****************************Wallet*****************************************************
 	@RequestMapping("/wallet")
 	public String wallet(@SessionAttribute("Investor") LoginDto investorLoginDto, Model model) {
 		WalletDto walletDto = this.investorService.fetchWalletDetails(investorLoginDto.getLoginKey());
@@ -75,20 +76,33 @@ public class InvestorContoller {
 		return "invWallet";
 	}
 	
+	//****************************Money to be Added*****************************************************
 	@RequestMapping("/returnAddmoney")
-	public String returnAddMoney(@ModelAttribute("moneyInputDto") MoneyInputDto moneyInputDto) {
+	public String returnAddMoney(@ModelAttribute("moneyInputDto") MoneyInputDto moneyInputDto, 
+			@SessionAttribute("Investor") LoginDto investorLoginDto,
+			Model model) {
+		WalletDto walletDto = this.investorService.fetchWalletDetails(investorLoginDto.getLoginKey());
+		model.addAttribute("walletDto", walletDto);
 		return "invAddMoneyPage";
 	}
 	
+	//****************************Money to be Withdrawn*****************************************************
 	@RequestMapping("/returnWithdrawmoney")
-	public String returnWithdrawMoney(@ModelAttribute("moneyInputDto") MoneyInputDto moneyInputDto) {
+	public String returnWithdrawMoney(@ModelAttribute("moneyInputDto") MoneyInputDto moneyInputDto,
+			@SessionAttribute("Investor") LoginDto investorLoginDto,
+			Model model) {
+		WalletDto walletDto = this.investorService.fetchWalletDetails(investorLoginDto.getLoginKey());
+		model.addAttribute("walletDto", walletDto);
 		return "invWithdrawMoneyPage";
 	}
 	
+	//****************************Add Money*****************************************************
 	@RequestMapping("/addmoney")
 	public String walletAddMoney(@Valid @ModelAttribute("moneyInputDto") MoneyInputDto moneyInputDto,BindingResult result, Model model,
 			@SessionAttribute("Investor") LoginDto investorLoginDto) {
 		
+		WalletDto walletDto = this.investorService.fetchWalletDetails(investorLoginDto.getLoginKey());
+		model.addAttribute("walletDto", walletDto);
 		if(result.hasErrors()) {
 			return "invAddMoneyPage";
 		}
@@ -100,9 +114,12 @@ public class InvestorContoller {
 		return "invAddMoneyPage";
 	}
 	
+	//****************************Withdraw Money*****************************************************
 	@RequestMapping("/withdrawmoney")
 	public String walletWithdrawMoney(@Valid @ModelAttribute("moneyInputDto") MoneyInputDto moneyInputDto,BindingResult result, Model model,
 			@SessionAttribute("Investor") LoginDto investorLoginDto) {
+		WalletDto walletDto = this.investorService.fetchWalletDetails(investorLoginDto.getLoginKey());
+		model.addAttribute("walletDto", walletDto);
 		
 		if(result.hasErrors()) {
 			return "invWithdrawMoneyPage";
@@ -115,16 +132,23 @@ public class InvestorContoller {
 		return "invWithdrawMoneyPage";
 	}
 	
+	//****************************Search Company*****************************************************
 	@RequestMapping("/searchCompany")
-	public String company(@ModelAttribute("company") SearchCompanyDto company) {
+	public String company(@ModelAttribute("company") SearchCompanyDto company, Model model) {
+		List<CompanyDto> companyDto= this.companyService.fetchAllCompanies();
+		model.addAttribute("companyDto", companyDto);
 		return "invSearchCompany";
 	}
 	
+	//****************************Search Commodity*****************************************************
 	@RequestMapping("/searchCommodity")
-	public String commodity(@ModelAttribute("commodity") SearchCommodityDto commodity) {
+	public String commodity(@ModelAttribute("commodity") SearchCommodityDto commodity, Model model) {
+		List<CommodityDto> commodityDto = this.commodityService.fetchAllCommodities();
+		model.addAttribute("commodityDto", commodityDto);
 		return "invSearchCommodity";
 	}
 	
+	//****************************Company*****************************************************
 	@RequestMapping("/searchCompanyName")
 	public String searchCompanyName(@Valid @ModelAttribute("company") SearchCompanyDto company, BindingResult result, Model model,
 			@SessionAttribute("Investor") LoginDto investorLoginDto) {
@@ -134,6 +158,8 @@ public class InvestorContoller {
 		CompanyDto searchCompany = this.companyService.fetchSingleCompanyByName(company);
 		if (searchCompany==null) {
 			model.addAttribute("message", "Company Not Found");
+			List<CompanyDto> companyDto= this.companyService.fetchAllCompanies();
+			model.addAttribute("companyDto", companyDto);
 			return "invSearchCompany";
 		}
 		this.investorService.addRecentViewCompany(investorLoginDto, searchCompany);
@@ -142,6 +168,7 @@ public class InvestorContoller {
 		return "invCompanyPage";
 	}
 	
+	//****************************Commodity*****************************************************
 	@RequestMapping("/commodity")
 	public String searchCommodityName(@Valid @ModelAttribute("commodity") SearchCommodityDto searchCommodityDto, BindingResult result,
 			Model model) {
@@ -161,6 +188,7 @@ public class InvestorContoller {
 		return "invCommodityPage";
 	}
 	
+	//****************************Company Page*****************************************************
 	@RequestMapping("/company/{companyTitle}")
 	public String searchCompanyByName(@PathVariable("companyTitle") String companyTitle, Model model,
 			@SessionAttribute("Investor") LoginDto investorLoginDto) {
@@ -172,12 +200,27 @@ public class InvestorContoller {
 		return "invCompanyPage";
 	}
 	
+	//****************************Commodity Page*****************************************************
+	@RequestMapping("/commodity/{commodityName}")
+	public String searchCommodityByName(@PathVariable("commodityName") String commodityName, Model model,
+			@SessionAttribute("Investor") LoginDto investorLoginDto) {
+
+		CommodityDto commodityDto = this.commodityService.fetchSingleCommodityByName(commodityName);
+		
+		model.addAttribute("commodityDto",commodityDto);
+		return "invCommodityPage";
+	}
+	
+	//****************************Buy Page*****************************************************
 	@RequestMapping("/buyCompany/{stockName}")
 	public String returnBuyPage(@PathVariable("stockName") String companyName, Model model,
 			@ModelAttribute("shareCount") ShareCountInputDto shareCount) {
 		model.addAttribute("stockName", companyName);
 		model.addAttribute("commodtiyCompany", "Company");
 		model.addAttribute("transactionType", "Buy");
+		CompanyDto companyDto = this.companyService.fetchSingleCompanyByName(companyName);
+		
+		model.addAttribute("stockDto",companyDto);
 		return "invBuySellPage";
 	}
 	
@@ -187,7 +230,8 @@ public class InvestorContoller {
 			@SessionAttribute("Investor") LoginDto investorLoginDto) {
 		model.addAttribute("commodtiyCompany", "Company");
 		model.addAttribute("transactionType", "Buy");
-		
+		CompanyDto companyDto = this.companyService.fetchSingleCompanyByName(companyName);
+		model.addAttribute("stockDto",companyDto);
 		if (result.hasErrors()) {
 			return "invBuySellPage";
 		}
@@ -205,6 +249,8 @@ public class InvestorContoller {
 		model.addAttribute("companyTitle", companyName);
 		model.addAttribute("commodtiyCompany", "Company");
 		model.addAttribute("transactionType", "Sell");
+		CompanyDto companyDto = this.companyService.fetchSingleCompanyByName(companyName);
+		model.addAttribute("stockDto",companyDto);
 		
 		return "invBuySellPage";
 	}
@@ -215,6 +261,8 @@ public class InvestorContoller {
 			@SessionAttribute("Investor") LoginDto investorLoginDto) {
 		model.addAttribute("commodtiyCompany", "Company");
 		model.addAttribute("transactionType", "Sell");
+		CompanyDto companyDto = this.companyService.fetchSingleCompanyByName(companyName);
+		model.addAttribute("stockDto",companyDto);
 		if (result.hasErrors()) {
 			return "invBuySellPage";
 		}
@@ -229,7 +277,6 @@ public class InvestorContoller {
 	
 	@RequestMapping("/historicalPrices/{companyCode}")
 	public String companyHistoricalPrice(@PathVariable("companyCode") Long companyCode, Model model) {
-		System.out.println("Company");
 		List<CompanyHistoricalDataOutputDto> companyHistoricalDataOutputDto = 
 				this.historicalService.fetchSingleByCompanyId(companyCode);
 		
@@ -244,8 +291,6 @@ public class InvestorContoller {
 		
 		model.addAttribute("commodityHistoricalDto", commodityHistoricalDto);
 		model.addAttribute("commodityTitle", commodityTitle);
-		System.out.println(commodityHistoricalDto.get(0).getCommodityPrice());
-		System.out.println(commodityHistoricalDto.get(0).getCommodityId());
 		return "invCommodityHistoricalPrices";
 	}
 	
@@ -274,6 +319,8 @@ public class InvestorContoller {
 		model.addAttribute("stockName", commodityName);
 		model.addAttribute("commodtiyCompany", "Commodity");
 		model.addAttribute("transactionType", "Buy");
+		CommodityDto stockDto = this.commodityService.fetchSingleCommodityByName(commodityName);
+		model.addAttribute("stockDto", stockDto);
 		return "invBuySellPage";
 	}
 	
@@ -283,6 +330,8 @@ public class InvestorContoller {
 			@SessionAttribute("Investor") LoginDto investorLoginDto) {
 		model.addAttribute("commodtiyCompany", "Commodity");
 		model.addAttribute("transactionType", "Buy");
+		CommodityDto stockDto = this.commodityService.fetchSingleCommodityByName(commodityName);
+		model.addAttribute("stockDto", stockDto);
 		
 		if (result.hasErrors()) {
 			return "invBuySellPage";
@@ -301,6 +350,8 @@ public class InvestorContoller {
 		model.addAttribute("commodityTitle", commodityName);
 		model.addAttribute("commodtiyCompany", "Commodity");
 		model.addAttribute("transactionType", "Sell");
+		CommodityDto stockDto = this.commodityService.fetchSingleCommodityByName(commodityName);
+		model.addAttribute("stockDto", stockDto);
 		
 		return "invBuySellPage";
 	}
@@ -311,6 +362,8 @@ public class InvestorContoller {
 			@SessionAttribute("Investor") LoginDto investorLoginDto) {
 		model.addAttribute("commodtiyCompany", "Commodity");
 		model.addAttribute("transactionType", "Sell");
+		CommodityDto stockDto = this.commodityService.fetchSingleCommodityByName(commodityName);
+		model.addAttribute("stockDto", stockDto);
 		if (result.hasErrors()) {
 			return "invBuySellPage";
 		}
@@ -322,7 +375,10 @@ public class InvestorContoller {
 		
 		return "invBuySellPage";
 	}
-
+	
+	//************************************************************
+	//Share Transactions Table
+	//************************************************************
 	@RequestMapping("/shareTransaction/{shareTransId}")
 	public String shareTransactionTable(@PathVariable("shareTransId") Long shareTransactionId, Model model) {
 		
@@ -336,5 +392,107 @@ public class InvestorContoller {
 		
 		return "invShareTransactionTable";
 	}
-
+	
+	//************************************************************
+	//Earning trend chart
+	//************************************************************
+	
+	@RequestMapping("/earningTrend")
+	public String earningTrend(@SessionAttribute("Investor") LoginDto investorLoginDto,Model model) {
+		
+		List<Double> earnings = this.investorService.getEarningFor10Weeks(investorLoginDto.getLoginKey());
+		
+		model.addAttribute("earnings", earnings);
+		
+		return "invEarningTrend";
+	}
+	
+	//************************************************************
+	//Portfolio Data
+	//************************************************************
+	
+	@RequestMapping("/portfolioReport")
+	public String portfolio(@SessionAttribute("Investor") LoginDto investorLoginDto,Model model, 
+			@ModelAttribute ReportTypeInputDto reportTypeInputDto) {
+		List<PortfolioDto> portfolioDto = this.investorService.getPortfolio(investorLoginDto.getLoginKey());
+		
+		model.addAttribute("portfolioDto", portfolioDto);
+		
+		return "invPortfolio";
+	}
+	
+	//************************************************************
+	//Portfolio Report Data
+	//************************************************************
+	
+	@RequestMapping("/portfolioReportData")
+	public String portfolioReportData(@SessionAttribute("Investor") LoginDto investorLoginDto,Model model, 
+			@Valid @ModelAttribute ReportTypeInputDto reportTypeInputDto, BindingResult result) {
+		
+		if (result.hasErrors()) {
+			return "invPortfolio";
+		}
+		
+		if(reportTypeInputDto.getReportType().equalsIgnoreCase("Periodic")) {
+			if ((reportTypeInputDto.getStartDate().equalsIgnoreCase(""))||(reportTypeInputDto.getEndDate().equalsIgnoreCase(""))){
+				List<PortfolioDto> portfolioDto = this.investorService.getPortfolio(investorLoginDto.getLoginKey());
+				model.addAttribute("portfolioDto", portfolioDto);
+				model.addAttribute("message", "Input Dates Error!!!");
+				
+				return "invPortfolio";
+			}
+		}
+		
+		List<PortfolioReportDto> portfolioReportDto = this.investorService.getPortfolioReport(investorLoginDto.getLoginKey(), 
+				reportTypeInputDto);
+		
+		if (portfolioReportDto==null) {
+			List<PortfolioDto> portfolioDto = this.investorService.getPortfolio(investorLoginDto.getLoginKey());
+			model.addAttribute("portfolioDto", portfolioDto);
+			model.addAttribute("message", "No Data Found!!!");
+			
+			return "invPortfolio";
+			
+		}
+		
+		model.addAttribute("portfolioReportDto", portfolioReportDto);
+		
+		return "invPortfolioReport";
+	}
+	
+	//************************************************************
+	//Search Sector Page
+	//************************************************************
+	
+	@RequestMapping("/searchSector")
+	public String returnSearchSector(@ModelAttribute SearchSectorInputDto searchSectorInputDto) {
+		
+		return "invSearchSector";
+	}
+	
+	//************************************************************
+	//Search Companies By Sector
+	//************************************************************
+	
+	@RequestMapping("/searchCompaniesSector")
+	public String searchCompaniesSector(@Valid @ModelAttribute SearchSectorInputDto searchSectorInputDto, BindingResult result,
+			Model model) {
+		
+		if(result.hasErrors()) {
+			return "invSearchSector";
+		}
+		
+		List<CompanyDto> listCompanyDto = this.companyService.fetchAllCompanyBySector(searchSectorInputDto.getSector());
+		
+		if(listCompanyDto==null) {
+			String message = "Sector not found";
+			model.addAttribute("message", message);
+			return "invSearchSector";
+		}
+		
+		model.addAttribute("listCompanyDto", listCompanyDto);
+		
+		return "invCompaniesBySector";
+	}
+	
 }

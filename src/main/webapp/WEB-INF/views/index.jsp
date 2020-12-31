@@ -12,7 +12,7 @@
 	}
 	#login{
 		margin: auto;
-		width: 17%;
+		width: 15%;
 		margin-top: 5%;
 		border: 3px solid green;
 		padding: 10px;
@@ -23,15 +23,16 @@
 	table{
 		text-align: center;
 	}
+	td{
+		padding: 1px 3px 1px 3px;
+	}
 </style>
 <title>Portfolio Management System</title>
 </head>
 <body>
 	<div>
 		<nav class="navbar navbar-dark bg-primary">
-			<span>
-				<span class="text-light font-weight-bold" >Portfolio Management System</span>
-			</span>
+			<span class="text-light font-weight-bold" >Portfolio Management System</span>
 		</nav>
 	</div>
 	<br/>

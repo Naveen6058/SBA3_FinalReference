@@ -145,9 +145,9 @@ span{
 		
 		<label class="generateCommision">Generate Commission</label>
 		<ul>
-			<li><a href="#">Annual Report</a></li>
-			<li><a href="#">Monthly Report</a></li>
-			<li><a href="#">Periodic Report</a></li>
+			<li><a href="${pageContext.request.contextPath}/bouser/generateAnnualReport">Annual Report</a></li>
+			<li><a href="${pageContext.request.contextPath}/bouser/generateMonthlyReport">Monthly Report</a></li>
+			<li><a href="${pageContext.request.contextPath}/bouser/generatePeriodicReport">Periodic Report</a></li>
 		</ul>
 	</div>
 	<div id="main">
@@ -160,9 +160,7 @@ span{
 			</button>
 			<div><a href="${pageContext.request.contextPath}/bouser/home" id="primaryNavigators">Home</a></div>
 			<span class="text-light font-weight-bold">Create Company</span>
-			<div><spring:form action="${pageContext.request.contextPath}/logout" method="POST">
-				<input type="submit" value="Logout" />
-				</spring:form></div>
+			<div><a href="${pageContext.request.contextPath}/bouser/logout" class="text-light font-weight-bold" id="primaryNavigators">Logout</a></div>
 		</nav>
 	</div>
 	

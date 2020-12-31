@@ -1,7 +1,6 @@
 package com.wf.training.bootapprestfulcrud.controller;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -14,14 +13,20 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.wf.training.bootapprestfulcrud.dto.AddCommodityPriceDto;
 import com.wf.training.bootapprestfulcrud.dto.AddStockPriceDto;
 import com.wf.training.bootapprestfulcrud.dto.BackOfficeLoginDto;
 import com.wf.training.bootapprestfulcrud.dto.CommodityDto;
 import com.wf.training.bootapprestfulcrud.dto.CompanyDto;
 import com.wf.training.bootapprestfulcrud.dto.SearchCommodityDto;
 import com.wf.training.bootapprestfulcrud.dto.SearchCompanyDto;
+import com.wf.training.bootapprestfulcrud.dto.SelectMonthDto;
+import com.wf.training.bootapprestfulcrud.dto.SelectPeriodDto;
+import com.wf.training.bootapprestfulcrud.dto.SelectYearDto;
+import com.wf.training.bootapprestfulcrud.dto.SuperUserLoginDto;
 import com.wf.training.bootapprestfulcrud.service.CommodityService;
 import com.wf.training.bootapprestfulcrud.service.CompanyService;
+import com.wf.training.bootapprestfulcrud.service.InvestorService;
 
 @Controller
 @RequestMapping("/bouser")
@@ -33,17 +38,27 @@ public class BoUserController {
 	@Autowired
 	private CommodityService commodityService;
 	
+	@Autowired
+	private InvestorService investorService;
+	
 	@RequestMapping("/home")
 	public String returnHome() {
-		// add business logic
 		
 		// respond back with a view page name
 		return "BackOfficeUserHomePage";
 	}
+	
+	@RequestMapping("/logout")
+	public String logout(Model model) {
+		BackOfficeLoginDto backofficeuser=new BackOfficeLoginDto();
+		model.addAttribute("backofficeuser", backofficeuser);
+		
+		model.addAttribute("Message", "Logged out successfully");
+		return "BackOfficeUserLogin";
+	}
 
 	@RequestMapping("/validate")
 	public String loginValidate() {
-		// add business logic
 		
 		// respond back with a view page name
 		return "index";
@@ -51,8 +66,6 @@ public class BoUserController {
 	
 	@RequestMapping("/returnAddCompany")
 	public String returnAddCompany(@ModelAttribute("createCompany") CompanyDto createCompany) {
-		// add business logic
-		
 		
 		// respond back with a view page name
 		return "CreateCompany";
@@ -67,7 +80,6 @@ public class BoUserController {
 		CompanyDto addCompanyOutputDto = this.companyService.addCompany(createCompany);
 		
 		model.addAttribute("CompanyOutput", addCompanyOutputDto);
-		// respond back with a view page name
 		return "SavedCompany";
 	}
 	
@@ -144,9 +156,6 @@ public class BoUserController {
 	
 	@RequestMapping("/modifyCommodity")
 	public String modifyCommodity(@Valid @ModelAttribute("commodityNewOutputDto") CommodityDto commodityNewOutputDto, BindingResult result, Model model) {
-		System.out.println("modifyCommodity");
-		System.out.println(commodityNewOutputDto);
-		System.out.println("modifyCommodity");
 		
 		if (result.hasErrors()) {
 			return "ModifyCommodity";
@@ -154,25 +163,17 @@ public class BoUserController {
 		
 		CommodityDto commodityOutputDto =this.commodityService.modifyCommodity(commodityNewOutputDto);
 		model .addAttribute("CommodityOutput", commodityOutputDto);
-		System.out.println("modifyCommodity1");
-		System.out.println(commodityOutputDto);
-		System.out.println("modifyCommodity1");
 		
 		return "SavedCommodity";
 	}
 	
 	@RequestMapping("/addCompanyStockPrice")
 	public String addCompanyStockPrice(@ModelAttribute("addstockprice") AddStockPriceDto addStockDto,Model model) {
-//		 List<CompanyDto> companyList=this.companyService.fetchAllCompanies();
-//		 List<String> companyNames=new ArrayList<String>();
-//		for(CompanyDto c:companyList)
-//		 companyNames.add(c.getCompanyTitle());
 		List<String> companyNames=this.companyService.fetchAllCompanyNames();
 		model.addAttribute("companyNames",companyNames);
 		return "BoAddCompanyStockPrice";
 	}
 	
-	//@ModelAttribute("companyNames")
 	@PostMapping("/newStockPrice")
 	public String newStockPrice(@Valid @ModelAttribute("addstockprice") AddStockPriceDto addStockDto,BindingResult result,Model model) {
 		List<String> companyNames=this.companyService.fetchAllCompanyNames();
@@ -190,7 +191,63 @@ public class BoUserController {
 	}
 	
 	@RequestMapping("/addCommodityPrice")
-	public String addCommodityPrice(@ModelAttribute("selectCompany") SearchCompanyDto searchCompanyDto) {
-		return "SelectModifyCompany";
+	public String addCommodityPrice(@ModelAttribute("addcommodityprice") AddCommodityPriceDto addCommodityDto,Model model) {
+		List<String> commodityNames=this.commodityService.fetchAllCommodityNames();
+		model.addAttribute("commodityNames",commodityNames);
+		return "BoAddCommodityPrice";
 	}
+	
+	@PostMapping("/newCommodityPrice")
+	public String newCommodityPrice(@Valid @ModelAttribute("addcommodityprice") AddCommodityPriceDto addCommodityDto,BindingResult result,Model model) {
+		List<String> commodityNames=this.commodityService.fetchAllCommodityNames();
+		model.addAttribute("commodityNames",commodityNames);
+		if (result.hasErrors()) {
+			
+			return "BoAddCommodityPrice";
+		}
+		if(this.commodityService.addCommodityPrice(addCommodityDto))
+		{
+			model.addAttribute("Message", "Commodity added successfully");
+			return "BoAddCommodityPrice";
+		}
+		return "BoAddCommodityPrice";
+	}
+	
+	@RequestMapping("/generateAnnualReport")
+	public String annualReport(@ModelAttribute("annualreport") SelectYearDto year,Model model) {
+		model.addAttribute("year", year);
+		return "BoGenerateAnnualReport";
+	}
+	
+	@RequestMapping("/generateMonthlyReport")
+	public String monthlyReport(@ModelAttribute("monthlyreport") SelectMonthDto month,Model model) {
+		//String[] months= {"January","February","March","April","May","June","July","August","September","October","November","December"};
+		String[] months= {"-01-","-02-","-03-","-04-","-05-","-06-","-07-","-08-","-09-","-10-","-11-","-12-"};
+		model.addAttribute("months", months);
+		return "BoGenerateMonthlyReport";
+	}
+	
+	@RequestMapping("/generatePeriodicReport")
+	public String periodicReport(@ModelAttribute("periodicreport") SelectPeriodDto period,Model model) {
+		return "BoGeneratePeriodicReport";
+	}
+	
+	@PostMapping("/returnAnnualReport")
+	public String returnAnnualReport(@ModelAttribute("annualreport") SelectYearDto year,Model model) {
+			model.addAttribute("transactions", this.investorService.findAllShareTransaction());
+		return "BoViewAnnualReport";
+	}
+	
+	@PostMapping("/returnMonthlyReport")
+	public String returnMonthlyReport(@ModelAttribute("monthlyreport") SelectMonthDto month,Model model) {
+			model.addAttribute("transactions", this.investorService.findAllShareTransaction());
+		return "BoViewMonthlyReport";
+	}
+	
+	@PostMapping("/returnPeriodicReport")
+	public String returnPeriodicReport(@ModelAttribute("periodicreport") SelectPeriodDto period,Model model) {
+			model.addAttribute("transactions", this.investorService.findAllShareTransactionBetweenDates(period.getStartDate(),period.getEndDate()));
+		return "BoViewPeriodicReport";
+	}
+	
 }

@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@taglib uri="http://www.springframework.org/security/tags" prefix="security" %>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="spring" %>   
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -98,6 +99,15 @@ span{
 	color:red;
 }
 
+#form{
+	border:1px solid green;
+}
+
+#mainForm{
+	padding: 2%;
+	border:1px solid green;
+}
+
 </style>
 <body>
 	<div id="mySidebar" class="sidebar">
@@ -105,8 +115,8 @@ span{
 		<a href="${pageContext.request.contextPath}/user/home">Dashboard</a> 
 		<a href="${pageContext.request.contextPath}/user/searchCompany">Search Company</a>
 		<a href="${pageContext.request.contextPath}/user/searchCommodity">Search Commodity</a> 
-		<a href="#">Sector</a>
-		<a href="#">Portfolio Report</a> 
+		<a href="${pageContext.request.contextPath}/user/searchSector">Sector</a>
+		<a href="${pageContext.request.contextPath}/user/portfolioReport">Portfolio Report</a> 
 		<a href="${pageContext.request.contextPath}/user/wallet">Wallet</a>
 	</div>
 	<div id="main">
@@ -123,20 +133,37 @@ span{
 		</nav>
 		<h4 id="errors" class="search">${message}</h4><br>
 		<div class="search">
-			<spring:form action="${pageContext.request.contextPath}/user/${transactionType}${commodtiyCompany}Shares/${stockName}" method="post" modelAttribute="shareCount">
-				<spring:label path="shareCount">Enter the ${transactionType} quantity for ${stockName}</spring:label>
-				<br>
-				<spring:input type="text" path="shareCount" placeholder="Enter Stock Amount"></spring:input>
-				<br>
-				<spring:errors path="shareCount" cssClass="error" id="errors"/>
-				<hr/>
-				<button type=Submit name=Submit>${transactionType}</button>
-			</spring:form>
+			<div id="mainForm">
+				<spring:form action="${pageContext.request.contextPath}/user/${transactionType}${commodtiyCompany}Shares/${stockName}" method="post" modelAttribute="shareCount">
+					<spring:label path="shareCount">Enter the ${transactionType} quantity for ${stockName}</spring:label>
+					<br>
+					<spring:input type="text" path="shareCount" id="quantity" placeholder="Enter Stock Amount"></spring:input>
+					<br>
+					<spring:errors path="shareCount" cssClass="error" id="errors"/>
+					<br>
+					<label>${commodtiyCompany} Name : <b>${stockName}</b></label>
+					<br>
+					<label>Current Price : 
+					<c:choose>
+					    <c:when test="${commodtiyCompany == 'Company'}">
+					   		<b id=currentPrice>${stockDto.sharePrice}</b>
+					    </c:when>
+					    <c:otherwise>
+					        <b id=currentPrice>${stockDto.price}</b>
+					    </c:otherwise>
+					</c:choose>
+					</label>
+					<br>
+					<label>Total Amount : <b id="totalAmount">0</b></label>
+					<hr/>
+					<button type=Submit name=Submit>${transactionType}</button>
+				</spring:form>
+			</div>
 		</div>
 	</div>
 	<script>
 		function openNav() {
-			document.getElementById("mySidebar").style.width = "250px";
+			document.getElementById("mySidebar").style.width = "270px";
 			document.getElementById("main").style.marginLeft = "250px";
 		}
 
@@ -144,6 +171,15 @@ span{
 			document.getElementById("mySidebar").style.width = "0";
 			document.getElementById("main").style.marginLeft = "0";
 		}
+		
+		var quant = document.getElementById("quantity");
+		quant.addEventListener('input', function (evt) {
+			document.getElementById("totalAmount").innerHTML = 
+				(document.getElementById("quantity").value)*
+				(parseInt(document.getElementById("currentPrice").innerHTML));
+		}, false);
+		
+		
 	</script>
 
 </body>

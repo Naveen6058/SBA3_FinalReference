@@ -24,7 +24,8 @@
 	#footer {
 		width:80%;
 		position: absolute;
-		right:15%;
+		right:9%;
+		margin:auto;
 	}
 	#primaryNavigators{
 		margin-left:50px;
@@ -33,6 +34,7 @@
 	}
 	#content{
 		text-align: center;	
+		margin:auto;
 		margin-top: 50px;
 	}
 	span{

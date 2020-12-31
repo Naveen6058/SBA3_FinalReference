@@ -1,8 +1,5 @@
 package com.wf.training.bootapprestfulcrud.dto;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-
 public class BackofficeOutputDto {
 	
 	private String firstName;

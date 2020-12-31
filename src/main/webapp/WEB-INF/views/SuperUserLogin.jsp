@@ -28,7 +28,12 @@
 		color:red;
 	}
 	#error{
+		margin: auto;
+		width: 50%;
+		margin-top: 1%;
 		color:red;
+		padding-left: 50px;
+		text-align:center;
 	}
 	#primaryNavigators{
 		margin-left:50px;
@@ -46,25 +51,30 @@
 		</nav>
 	</div>
 	<br/>
-	<div id=login>
 	<h4 id =error>${Message}</h4>
-	<spring:form action="${pageContext.request.contextPath}/validate" method="POST" modelAttribute="superuser"> 
-		<div>
-			<div><label >Username</label></div>
-			<div><spring:input path="superUserId" type="text" />
-			<spring:errors path="superUserId" cssClass="error"/></div>
-		</div>
-			<br/>
-		<div>
-			<div><spring:label path="password">Password</spring:label></div>
-			<div><spring:input path="password" type="password" />
-			<spring:errors path="password" cssClass="error"/></div>
-		</div>
-			<br/>
-		<div>
-			<input type="submit" value="Login"> 
-		</div>
-	</spring:form>
+	<div id=login>
+		<spring:form action="${pageContext.request.contextPath}/validate" method="POST" modelAttribute="superuser"> 
+			<table>
+				<tr>
+					<td><spring:label path="superUserId">Username</spring:label> </td>
+					<td><spring:input type="text" path="superUserId"></spring:input> </td>
+				</tr>
+				<tr>
+					<td colspan=2><spring:errors path="superUserId" cssClass="error" id="errors"/></td>
+				</tr>
+				<tr>
+					<td><spring:label path="password">Password</spring:label> </td>
+					<td><spring:input type="password" path="password"></spring:input> </td>
+				</tr>
+				<tr>
+					<td colspan=2><spring:errors path="password" cssClass="error" id="errors"/></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td><hr/><input type=Submit name=Submit Value=Login></td>
+				</tr>
+			</table>
+		</spring:form>
 	</div>
 </body>
 </html>

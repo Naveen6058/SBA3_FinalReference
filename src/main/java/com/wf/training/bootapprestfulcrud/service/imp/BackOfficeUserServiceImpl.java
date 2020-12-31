@@ -6,15 +6,11 @@ import org.springframework.stereotype.Service;
 import com.wf.training.bootapprestfulcrud.dto.BackOfficeLoginDto;
 import com.wf.training.bootapprestfulcrud.entity.BackOfficeUser;
 import com.wf.training.bootapprestfulcrud.repository.BackOfficeUserRepository;
-import com.wf.training.bootapprestfulcrud.repository.SuperUserRepository;
 import com.wf.training.bootapprestfulcrud.service.BackOfficeUserService;
 
 @Service
 public class BackOfficeUserServiceImpl implements BackOfficeUserService {
 
-	@Autowired
-	private SuperUserRepository repo;
-	
 	@Autowired
 	private BackOfficeUserRepository borepo;
 
@@ -29,9 +25,5 @@ public class BackOfficeUserServiceImpl implements BackOfficeUserService {
 				return true;
 			else
 				return false;
-			
 	}
-	
-
-	
 }

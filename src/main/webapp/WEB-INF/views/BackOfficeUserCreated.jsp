@@ -25,28 +25,37 @@
 	.error{
 		color:red;
 	}
-
+	
+	#output{
+		margin: auto;
+		width: 22%;
+		margin-top: 5%;
+		border: 3px solid green;
+		padding: 10px;
+		text-align: center;
+	}
+	h4{
+		color:DodgerBlue;
+	}
 </style>
 </head>
 <body>
-<div>
+	<div>
 		<nav class="navbar navbar-dark bg-primary">
-			<span>
-				<span class="text-light font-weight-bold" >User Created Successfully</span>
-			</span>
-		
-		<div><spring:form action="${pageContext.request.contextPath}/logout" method="POST">
-				<input type="submit" value="Logout" />
-				</spring:form></div>
+			<div><a href="${pageContext.request.contextPath}/superuser/home" class="text-light font-weight-bold">Home</a></div>
+			<span class="text-light font-weight-bold">Create BackOffice User</span>
+			<div><a href="${pageContext.request.contextPath}/superuser/logout" class="text-light font-weight-bold">Logout</a></div>
 		</nav>
 	</div>
-<hr/>
-<h2>Saved Details...</h2>
-
-<h3>FIRST NAME : ${backofficeuser.firstName}</h3>
-<h3>LAST NAME : ${backofficeuser.lastName}</h3>
-<h3>EMAIL: ${backofficeuser.emailId}</h3>
-<h3>PASSWORD: ${backofficeuser.password}</h3>
-<h3>Login ID: ${backofficeuser.loginId}</h3>
+	<div id = output>
+		<h4>Back-office User Created Successfully</h4>
+		<hr/>
+		<h5>FIRST NAME : ${backofficeuser.firstName}</h5>
+		<h5>LAST NAME : ${backofficeuser.lastName}</h5>
+		<h5>EMAIL: ${backofficeuser.emailId}</h5>
+		<h5>PASSWORD: ${backofficeuser.password}</h5>
+		<h5>Login ID: ${backofficeuser.loginId}</h5>
+	</div>
+	
 </body>
 </html>

@@ -38,7 +38,6 @@
 		color:red;
 		padding-left: 50px;
 		text-align:center;
-		
 	}
 </style>
 <title>Login Page</title>
@@ -60,14 +59,16 @@
 					<td><spring:input type="text" path="loginKey"></spring:input> </td>
 				</tr>
 				<tr>
-					<td colspan=2><spring:errors path="loginKey" cssClass="error" id="errors"/></td>
+					<td></td>
+					<td><spring:errors path="loginKey" cssClass="error" id="errors"/></td>
 				</tr>
 				<tr>
 					<td><spring:label path="password">Password</spring:label> </td>
 					<td><spring:input type="password" path="password"></spring:input> </td>
 				</tr>
 				<tr>
-					<td colspan=2><spring:errors path="password" cssClass="error" id="errors"/></td>
+					<td></td>
+					<td><spring:errors path="password" cssClass="error" id="errors"/></td>
 				</tr>
 				<tr>
 					<td></td>

@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@taglib uri="http://www.springframework.org/security/tags" prefix="security" %>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="spring" %>   
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -68,7 +69,7 @@ body {
 	transition: margin-left .5s;
 }
 .search{
-	padding-top:5%;
+	margin:2%;
 	display: flex;
     justify-content: center;
     text-align: center;
@@ -90,6 +91,23 @@ span{
 	color:red;
 }
 
+table, th, td {
+	  margin-left: 10px;
+	  height: 50px;
+	  border: 1px solid black;
+	}
+	thead {
+	  background: DodgerBlue;
+	  color: #fff;
+	}
+	table{
+		width:80%;
+	}
+	#primaryNavigators{
+		margin-left:50px;
+		color:white;
+		position:relative;
+	}
 </style>
 <body>
 	<div id="mySidebar" class="sidebar">
@@ -97,8 +115,8 @@ span{
 		<a href="${pageContext.request.contextPath}/user/home">Dashboard</a> 
 		<a href="${pageContext.request.contextPath}/user/searchCompany">Search Company</a>
 		<a href="${pageContext.request.contextPath}/user/searchCommodity">Search Commodity</a> 
-		<a href="#">Sector</a>
-		<a href="#">Portfolio Report</a> 
+		<a href="${pageContext.request.contextPath}/user/searchSector">Sector</a>
+		<a href="${pageContext.request.contextPath}/user/portfolioReport">Portfolio Report</a> 
 		<a href="${pageContext.request.contextPath}/user/wallet">Wallet</a>
 	</div>
 	<div id="main">
@@ -109,7 +127,7 @@ span{
 				aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
 			</button>
-			<div><a href="${pageContext.request.contextPath}/user/home" class="text-light font-weight-bold">Home</a></div>
+			<div><a href="${pageContext.request.contextPath}/user/home" class="text-light font-weight-bold" id="primaryNavigators">Home</a></div>
 			<span class="text-light font-weight-bold">Search Company</span>
 			<div><a href="${pageContext.request.contextPath}/logout" class="text-light font-weight-bold">Logout</a></div>
 		</nav>
@@ -117,16 +135,42 @@ span{
 		<div class="search">
 			<spring:form action="${pageContext.request.contextPath}/user/searchCompanyName" method="post" modelAttribute="company">
 				<spring:input type="search" path="companyName" placeholder="Search Company Name"></spring:input>
+				<button type=Submit name=Submit>Submit</button>
 				<br>
 				<spring:errors path="companyName" cssClass="error" id="errors"/>
-				<hr/>
-				<button type=Submit name=Submit>Submit</button>
 			</spring:form>
 		</div>
 	</div>
+	<hr/>
+	<div class="search">
+		<table>
+			<thead>
+				<tr>
+					<td>Company Code</td>
+					<td>Company Title</td>
+					<td>Sector</td>
+					<td>Current Price</td>
+					<td>Stock Exchange</td>
+				</tr>
+			</thead>
+			<tbody>
+				<core:forEach var="company" begin="0" end="10" items="${companyDto}">
+					<tr>
+						<td>${company.companyCode}</td>
+						<td>
+						<a href ="${pageContext.request.contextPath}/user/company/${company.companyTitle}">${company.companyTitle}</a>
+						</td>
+						<td>${company.sector}</td>
+						<td>${company.sharePrice}</td>
+						<td>${company.stockExchange}</td>
+					</tr>
+				</core:forEach>
+			</tbody>
+		</table>
+	</div>
 	<script>
 		function openNav() {
-			document.getElementById("mySidebar").style.width = "250px";
+			document.getElementById("mySidebar").style.width = "270px";
 			document.getElementById("main").style.marginLeft = "250px";
 		}
 

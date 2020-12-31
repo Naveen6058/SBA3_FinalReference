@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>User Registration</title>
+<title>Create BackOffice User</title>
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
 	integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
@@ -31,44 +31,52 @@
 <body>
 	<div>
 		<nav class="navbar navbar-dark bg-primary">
-			<span>
-				<span class="text-light font-weight-bold" >Create Back Office User</span>
-			</span>
-			<div><spring:form action="${pageContext.request.contextPath}/logout" method="POST">
-				<input type="submit" value="Logout" />
-				</spring:form></div>
+			<div><a href="${pageContext.request.contextPath}/superuser/home" class="text-light font-weight-bold">Home</a></div>
+			<span class="text-light font-weight-bold">Create BackOffice User</span>
+			<div><a href="${pageContext.request.contextPath}/superuser/logout" class="text-light font-weight-bold">Logout</a></div>
 		</nav>
 	</div>
 	<div id=center>
-			<spring:form action="${pageContext.request.contextPath}/confirm" method="POST" modelAttribute="backofficeuser"> 
-				<div>
-					<div><label>First name: </label></div>
-					<div><spring:input path="firstName" type="text" />
-					<spring:errors path="firstName" cssClass="error"/></div>
-				</div>
-					<br/>
-				<div>
-					<div><label>Last Name:</label></div>
-					<div><spring:input path="lastName" type="text" />
-					<spring:errors path="lastName" cssClass="error"/></div>
-				</div>
-					<br/>
-				<div>
-					<div><label>Email ID:</label></div>
-					<div><spring:input path="emailId" type="text" />
-					<spring:errors path="emailId" cssClass="error"/></div>
-				</div>
-					<br/>
-				<div>
-					<div><label>Password: </label></div>
-					<div><spring:input path="password" type="password" />
-					<spring:errors path="password" cssClass="error"/></div>
-				</div>
-					<br/>
-				<div>
-					<input type="submit" value="Create User"> 
-				</div>
-			</spring:form>
+		<spring:form action="${pageContext.request.contextPath}/superuser/confirm" method="POST" modelAttribute="backofficeuser">
+			<table>
+				<tr>
+					<td><spring:label path="firstName">First name:</spring:label> </td>
+					<td><spring:input type="text" path="firstName"></spring:input> </td>
+				</tr>
+				<tr>
+					<td></td>
+					<td><spring:errors path="firstName" cssClass="error"/></td>
+				</tr>
+				<tr>
+					<td><spring:label path="lastName">Last Name:</spring:label> </td>
+					<td><spring:input type="text" path="lastName"></spring:input> </td>
+				</tr>
+				<tr>
+					<td></td>
+					<td><spring:errors path="lastName" cssClass="error"/></td>
+				</tr>
+				<tr>
+					<td><spring:label path="emailId">Email ID:</spring:label> </td>
+					<td><spring:input type="text" path="emailId"></spring:input> </td>
+				</tr>
+				<tr>
+					<td></td>
+					<td><spring:errors path="emailId" cssClass="error"/></td>
+				</tr>
+				<tr>
+					<td><spring:label path="password">Password:</spring:label> </td>
+					<td><spring:input type="password" path="password"></spring:input> </td>
+				</tr>
+				<tr>
+					<td></td>
+					<td><spring:errors path="password" cssClass="error"/></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td><hr/><input type=Submit name=Submit Value=Submit></td>
+				</tr>
+			</table>
+		</spring:form>
 	</div>
 </body>
 </html>

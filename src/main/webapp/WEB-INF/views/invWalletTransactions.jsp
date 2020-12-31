@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
  <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="core" %>
- <%@taglib uri="http://www.springframework.org/tags/form" prefix="spring" %>   
+ <%@taglib uri="http://www.springframework.org/tags/form" prefix="spring" %> 
 <!DOCTYPE html>
 <html>
 <head>
@@ -25,7 +25,7 @@
 	#footer {
 		width:80%;
 		position: absolute;
-		right:15%;
+		right:9%;
 	}
 	#primaryNavigators{
 		margin-left:50px;
@@ -71,7 +71,14 @@
 						<td>${transactions.transactionType}</td>
 						<td>${transactions.amount}</td>
 						<td>
-						<a href="${pageContext.request.contextPath}/user/shareTransaction/${transactions.shareTransactionId}">${transactions.shareTransactionId}</a>
+						<core:choose>
+						    <core:when test="${transactions.shareTransactionId==0}">
+						        <a>NA</a>
+						    </core:when>
+						    <core:otherwise>
+						        <a href="${pageContext.request.contextPath}/user/shareTransaction/${transactions.shareTransactionId}">${transactions.shareTransactionId}</a>
+						    </core:otherwise>
+						</core:choose>
 						</td>
 						<td>${transactions.dateTime}</td>
 					</tr>

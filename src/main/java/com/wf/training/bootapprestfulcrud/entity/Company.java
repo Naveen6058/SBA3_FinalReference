@@ -15,14 +15,14 @@ public class Company {
 	private String companyTitle;
 	private String operation;
 	private int shareCount; 
-	private float sharePrice;
+	private Float sharePrice;
 	private String sector;
 	private String currency; 
 	private long turnover;
 //	private int boUserId;
 	private String dateTimeIPO;
 	private String stockExchange;
-	private float ipoPrice;
+	private Float ipoPrice;
 	
 	public String getStockExchange() {
 		return stockExchange;
@@ -30,10 +30,10 @@ public class Company {
 	public void setStockExchange(String stockExchange) {
 		this.stockExchange = stockExchange;
 	}
-	public float getIpoPrice() {
+	public Float getIpoPrice() {
 		return ipoPrice;
 	}
-	public void setIpoPrice(float ipoPrice) {
+	public void setIpoPrice(Float ipoPrice) {
 		this.ipoPrice = ipoPrice;
 	}
 	
@@ -49,10 +49,10 @@ public class Company {
 	public void setCompanyTitle(String companyTitle) {
 		this.companyTitle = companyTitle;
 	}
-	public float getSharePrice() {
+	public Float getSharePrice() {
 		return sharePrice;
 	}
-	public void setSharePrice(float sharePrice) {
+	public void setSharePrice(Float sharePrice) {
 		this.sharePrice = sharePrice;
 	}
 //	public int getBoUserId() {

@@ -31,6 +31,7 @@
 		text-align: center;
 		border: 1px solid black;
 	  	border-collapse: collapse;
+	  	margin:auto;
 	}
 	#primaryNavigators{
 		margin-left:50px;
@@ -41,10 +42,9 @@
 		position:absolute;
 	}
 	#currentPrice{
-		margin-left:100px;
+		margin-left:120px;
 		position: relative;
 		top:10px;
-		border: 4px solid red;
 		width:250px;
 		text-align: center;
 		height: 90px;

@@ -5,8 +5,8 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.User.UserBuilder;
+//import org.springframework.security.core.userdetails.User;
+//import org.springframework.security.core.userdetails.User.UserBuilder;
 
 // WebSecurityConfigurerAdapter : class provides methods to add config
 
@@ -24,12 +24,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		// ldap based 
 		
 		//  create user (in-memory auth)
-		UserBuilder builder = User.withDefaultPasswordEncoder(); 
-		auth.inMemoryAuthentication()
+//		UserBuilder builder = User.withDefaultPasswordEncoder(); 
+		//auth.inMemoryAuthentication()
 //			.withUser(builder.username("1").password("abc").roles("User"))
 //			.withUser(builder.username("002").password("abc").roles("SuperUser"))
 //			.withUser(builder.username("003").password("abc").roles("bouser"));
-		.withUser(builder.username("admin").password("admin").roles("User"));
+	//	.withUser(builder.username("admin").password("admin").roles("User"));
 		
 	}
 	

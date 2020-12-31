@@ -18,6 +18,7 @@ public class ShareTransaction {
 	private double transactionAmount;
 	private double commission;
 	private String companyCommodity;
+	private double earning;
 	
 	public Long getShareTransactionId() {
 		return shareTransactionId;
@@ -78,6 +79,12 @@ public class ShareTransaction {
 	}
 	public void setStockPrice(double stockPrice) {
 		this.stockPrice = stockPrice;
+	}
+	public double getEarning() {
+		return earning;
+	}
+	public void setEarning(double earning) {
+		this.earning = earning;
 	}
 	
 }

@@ -98,6 +98,10 @@
 					<td>${shareTransactionDto.commission}</td>
 				</tr>
 				<tr>
+					<td>Earning Amount</td>
+					<td>${shareTransactionDto.earning}</td>
+				</tr>
+				<tr>
 					<td>Company/Commodity</td>
 					<td>${shareTransactionDto.companyCommodity}</td>
 				</tr>
